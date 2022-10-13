@@ -1,17 +1,16 @@
-import './App.css'
-import Footer from './components/Footer'
-import Login from './components/Login'
-import Phone from './components/Phone'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
+import Home from './pages/Home'
+import Register from './pages/Register'
 
 function App() {
   return (
-    <div className='landing-page'>
-      <div className='container'>
-        <Phone />
-        <Login />
-      </div>
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='register' element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
