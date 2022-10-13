@@ -87,6 +87,20 @@ body {
     z-index: 0;
 }
 
+.label-u__hover-in {
+    transition: transform 0.2s ease;
+    transform: scale(0.83) translateY(-10px) translateX(-20px);
+}
+
+.label__hover-in {
+    transition: transform 0.2s ease;
+    transform: scale(0.83) translateY(-10px) translateX(-6px);
+}
+
+.label__hover-out {
+    transition: transform 0.2s ease;
+}
+
 .auth-container .login .form-input input {
     width: 75%;
     height: 20px;
@@ -102,17 +116,6 @@ body {
 .auth-container .login .form-input input:focus {
     border-color: rgb(168, 168, 168);
 }
-
-/* .auth-container .login input[name="username"].active,
-.auth-container .login input[name="password"].active {
-font-size: 12px;
-padding-top: 10px;
-}
-
-.auth-container .login input[name="username"].active::placeholder,
-.auth-container .login input[name="password"].active::placeholder {
-transform: scale(0.83) translateY(-10px) translateX(-22px);
-} */
 
 .auth-container .login > button:first-of-type {
     all: unset;
@@ -131,6 +134,11 @@ transform: scale(0.83) translateY(-10px) translateX(-22px);
     border: 1px solid transparent;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.auth-container .login .clickable {
+    background-color: rgb(0, 149, 246) !important;
+    cursor: pointer !important;
 }
 
 .auth-container .login .seperator {

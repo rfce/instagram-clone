@@ -1,17 +1,22 @@
 import logo from '../assets/Images/Instagram.png'
 import facebookIcon from '../assets/Icons/Facebook.png'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+
+    const canLogin = username.length > 4 && password.length > 4
 
     return (
         <div className="auth-container">
             <div className="login">
                 <img src={logo} alt="Instagram logo" />
                 <div className="form-input">
-                    <label>Phone number, username, or email</label>
+                    <label className={username ? 'label-u__hover-in' : 'label__hover-out'}>
+                        Phone number, username, or email
+                    </label>
                     <input
                         type="text" 
                         name="username" 
@@ -20,7 +25,9 @@ const Login = () => {
                     />
                 </div>
                 <div className="form-input">
-                    <label>Password</label>
+                    <label className={password ? 'label__hover-in' : 'label__hover-out'}>
+                        Password
+                    </label>
                     <input
                         type="password" 
                         name="password" 
@@ -28,7 +35,9 @@ const Login = () => {
                         onChange={e => setPassword(e.target.value)}
                     />
                 </div>
-                <button>Log In</button>
+                <button className={canLogin ? "clickable" : undefined}>
+                    Log In
+                </button>
                 <div className="seperator">
                     <div></div>
                     <div className="seperator-text">OR</div>
@@ -38,11 +47,15 @@ const Login = () => {
                     <img src={facebookIcon} alt='Facebook icon'/>
                     <span>Log in with Facebook</span>
                 </button>
-                <a href='/reset-password'>Forgot password?</a>
+                <Link to="/reset-password">
+                    Forgot password?
+                </Link>
             </div>
             <div className="register">
                 <p>Don't have an account?</p>
-                <a href='/register'>Sign up</a>
+                <Link to="/register">
+                    Sign up
+                </Link>
             </div>
         </div>
     )

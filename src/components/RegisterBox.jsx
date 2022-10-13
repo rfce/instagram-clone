@@ -10,6 +10,8 @@ const RegisterBox = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
+    const canRegister = contact.length > 4 && fullname.length > 4 && username.length > 4 && password.length > 4
+
     return (
         <>
             <div className="register__container">
@@ -24,7 +26,9 @@ const RegisterBox = () => {
                 </div>
                 <div className="register__inputs">
                     <div>
-                        <label>Mobile Number or Email</label>
+                        <label className={contact ? 'label-c__hover-in' : 'label__hover-out'}>
+                            Mobile Number or Email
+                        </label>
                         <input
                             type="text"
                             name="contact"
@@ -33,7 +37,9 @@ const RegisterBox = () => {
                         />
                     </div>
                     <div>
-                        <label>Full Name</label>
+                        <label className={fullname ? 'label__hover-in' : 'label__hover-out'}>
+                            Full Name
+                        </label>
                         <input
                             type="text"
                             name="fullname"
@@ -42,7 +48,9 @@ const RegisterBox = () => {
                         />
                     </div>
                     <div>
-                        <label>Username</label>
+                        <label className={username ? 'label__hover-in' : 'label__hover-out'}>
+                            Username
+                        </label>
                         <input
                             type="text"
                             name="username"
@@ -51,7 +59,9 @@ const RegisterBox = () => {
                         />
                     </div>
                     <div>
-                        <label>Password</label>
+                        <label className={password ? 'label__hover-in' : 'label__hover-out'}>
+                            Password
+                        </label>
                         <input
                             type="password"
                             name="password"
@@ -68,7 +78,9 @@ const RegisterBox = () => {
                         By signing up, you agree to our <span>Terms</span> , <span>Privacy Policy</span> and <span>Cookies Policy</span> .
                     </p>
                 </div>
-                <button>Sign up</button>
+                <button className={canRegister ? "clickable" : undefined}>
+                    Sign up
+                </button>
             </div>
             <div className="register__hint">
                 <p>Have an account?</p>
