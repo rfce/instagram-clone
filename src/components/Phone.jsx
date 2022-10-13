@@ -1,6 +1,4 @@
-import { useRef } from 'react'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import phone from '../assets/Images/Phone.png'
 import slideOne from '../assets/Images/Slideshow/good-times.png'
 import slideTwo from '../assets/Images/Slideshow/screenshot.png'
@@ -26,9 +24,9 @@ const Phone = () => {
                 let first
                 let second
 
-                active[0] + 1 == 4 ? first = 0 : first = active[0] + 1
+                active[0] + 1 === 4 ? first = 0 : first = active[0] + 1
 
-                active[1] + 1 == 4 ? second = 0 : second = active[1] + 1
+                active[1] + 1 === 4 ? second = 0 : second = active[1] + 1
                 
                 return [first, second]
             })
@@ -44,13 +42,13 @@ const Phone = () => {
             <img src={phone} alt="" />
             <div className='slides'>
                 {slides.map((slide, index) => {
-                    if (index == active[0]) {
-                        return <img className='slide-in' src={slide} alt="" />
+                    if (index === active[0]) {
+                        return <img key={index} className='slide-in' src={slide} alt="" />
                     }
-                    else if (index == active[1]) {
-                        return <img className='slide-out' src={slide} alt="" />
+                    else if (index === active[1]) {
+                        return <img key={index} className='slide-out' src={slide} alt="" />
                     } else {
-                        return <img src={slide} alt="" />
+                        return <img key={index} src={slide} alt="" />
                     }
                 })}
             </div>
