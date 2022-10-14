@@ -1,12 +1,10 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const parsePhoneNumber = require('libphonenumber-js')
-const express = require('express')
-const router  = express.Router()
 
-const User = require('../../model/User')
+const User = require('../model/User')
 
-router.post('/register', async (req, res) => {
+const registerUser = async (req, res) => {
     const { fullname, contact, username, password } = req.body
 
     let phone, email
@@ -152,6 +150,6 @@ router.post('/register', async (req, res) => {
         reason: "User registered successfully",
         token
     })
-})
+}
 
-module.exports = router
+module.exports = registerUser

@@ -5,7 +5,7 @@ const cookies = require('cookie-parser')
 const express = require('express')
 const app = express()
 
-const authRoute = require('./routes/api/login')
+const authRoute = require('./routes/api/auth')
 
 const PORT = process.env.PORT || 5000
 
@@ -30,7 +30,6 @@ app.use(cors({
     },
     optionsSuccessStatus: 200
 }))
-
 
 // Routes
 app.use('/api', authRoute)
