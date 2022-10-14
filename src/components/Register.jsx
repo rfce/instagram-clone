@@ -1,22 +1,66 @@
-import "./css/RegisterBox.css"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import "./css/Register.css"
+import { useState, useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import instagramLogo from "../assets/Images/Instagram.png"
 import facebookIcon from "../assets/Icons/facebookWhite.png"
+import api from "../config/backend"
 
-const RegisterBox = () => {
+const Register = () => {
     const [contact, setContact] = useState("")
     const [fullname, setFullname] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [message, setMessage] = useState("")
+    const [click, setClick] = useState(0)
+    const [success, setSuccess] = useState(false)
 
     const canRegister = contact.length > 4 && fullname.length > 4 && username.length > 4 && password.length > 4
 
+    const user = { contact, fullname, username, password }
+
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        document.title = "Sign up • Instagram"
+    }, [])
+
+    useEffect(() => {
+        const registerUser = async () => {
+            const response = await fetch(`${api}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+
+            const data = await response.json()
+
+            if (data.status == "fail") {
+                setMessage(data.reason)
+            } else {
+                localStorage.setItem("token", data.token)
+                setSuccess(true)
+            }
+        }
+        if (click) {
+            registerUser()
+        }
+    }, [click])
+
+    useEffect(() => {
+        if (success) {
+            navigate('/dashboard')
+        }
+    }, [success])
+    
     return (
         <>
             <div className="register__container">
                 <img src={instagramLogo} alt="Instagram logo" />
-                <h2>Sign up to see photos and videos from your friends.</h2>
+                <h2>
+                    Sign up to see photos and videos from your friends.
+                </h2>
                 <div className="register__facebook_login">
                     <img src={facebookIcon} alt="Facebook icon" />
                     Log in with Facebook
@@ -78,9 +122,17 @@ const RegisterBox = () => {
                         By signing up, you agree to our <span>Terms</span> , <span>Privacy Policy</span> and <span>Cookies Policy</span> .
                     </p>
                 </div>
-                <button className={canRegister ? "clickable" : undefined}>
+                <button 
+                    className={canRegister ? "clickable" : undefined}
+                    onClick={() => {
+                        setClick(prev => prev + 1)
+                    }}
+                >
                     Sign up
                 </button>
+                <div className={message ? "message-box" : "message-box hidden"}>
+                    <span>{message}</span>
+                </div>
             </div>
             <div className="register__hint">
                 <p>Have an account?</p>
@@ -90,4 +142,4 @@ const RegisterBox = () => {
     )
 }
 
-export default RegisterBox
+export default Register

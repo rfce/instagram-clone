@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import "./css/Phone.css"
 import phone from '../assets/Images/Phone.png'
 import slideOne from '../assets/Images/Slideshow/good-times.png'
 import slideTwo from '../assets/Images/Slideshow/screenshot.png'
@@ -38,7 +39,7 @@ const Phone = () => {
     }, [active])
 
     return (
-        <div className='phone'>
+        <div className='home__phone'>
             <img src={phone} alt="" />
             <div className='slides'>
                 {slides.map((slide, index) => {

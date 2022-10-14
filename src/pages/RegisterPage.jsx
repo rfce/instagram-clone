@@ -1,15 +1,15 @@
-import RegisterBox from "../components/RegisterBox"
+import Register from "../components/Register"
 import Footer from "../components/Footer"
 
-const Register = () => {
+const RegisterPage = () => {
     return (
         <>
             <div className="register__body">
-                <RegisterBox />
+                <Register />
             </div>
             <Footer />
         </>
     )
 }
 
-export default Register
+export default RegisterPage

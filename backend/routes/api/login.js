@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
         if (phoneNumber === undefined) {
             return res.json({
                 status: "fail",
-                reason: "Invalid phone number format"
+                reason: "Looks like your phone number may be incorrect. Please try entering your full number, including the country code."
             })
         }
         
@@ -117,13 +117,12 @@ router.post('/register', async (req, res) => {
     const duplicate = await User.findOne({
         "$or": [
             { username },
-            { email },
-            { phone }
+            email ? { email } : { phone }
         ]
     })
 
     if (duplicate !== null) {
-        if (duplicate.phone == phone || duplicate.email == email) {
+        if ((phone && duplicate.phone == phone) || (email && duplicate.email == email)) {
             return res.json({
                 status: "fail",
                 reason: "Email address or phone already registered"
@@ -132,17 +131,13 @@ router.post('/register', async (req, res) => {
 
         return res.json({
             status: "fail",
-            reason: "Username already registered"
+            reason: "This username isn't available. Please try another."
         })
     }
 
     // Save new user to database
     await User.create({
-        fullname: fullname,
-        phone: phone,
-        email: email,
-        username: username,
-        password: hashed
+        fullname, email, phone, username, password: hashed
     })
 
     const token = jwt.sign(
@@ -152,14 +147,10 @@ router.post('/register', async (req, res) => {
         process.env.JWT_ACCESS_TOKEN
     )
 
-    res.cookie("token", token, {
-        httpOnly: true,
-        secure: true
-    })
-
     res.json({
         status: "success",
         reason: "User registered successfully",
+        token
     })
 })
 

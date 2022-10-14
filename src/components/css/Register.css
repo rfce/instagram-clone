@@ -156,6 +156,19 @@
     cursor: pointer !important;
 }
 
+.register__container .message-box {
+    font-size: 14px;
+    color: rgb(237, 73, 86);
+    width: 270px;
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 30px;
+}
+
+.register__container .hidden {
+    display: none;
+}
+
 .register__hint {
     display: flex;
     justify-content: center;

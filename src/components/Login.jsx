@@ -1,36 +1,37 @@
-import logo from '../assets/Images/Instagram.png'
-import facebookIcon from '../assets/Icons/Facebook.png'
+import "./css/Login.css"
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+
+import logo from '../assets/Images/Instagram.png'
+import facebookIcon from '../assets/Icons/Facebook.png'
 
 const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [message, setMessage] = useState("")
 
     const canLogin = username.length > 4 && password.length > 4
 
     return (
-        <div className="auth-container">
+        <div className="home__login">
             <div className="login">
                 <img src={logo} alt="Instagram logo" />
-                <div className="form-input">
+                <div className="login_input">
                     <label className={username ? 'label-u__hover-in' : 'label__hover-out'}>
                         Phone number, username, or email
                     </label>
                     <input
                         type="text" 
-                        name="username" 
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
                 </div>
-                <div className="form-input">
+                <div className="login_input">
                     <label className={password ? 'label__hover-in' : 'label__hover-out'}>
                         Password
                     </label>
                     <input
                         type="password" 
-                        name="password" 
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
@@ -47,6 +48,13 @@ const Login = () => {
                     <img src={facebookIcon} alt='Facebook icon'/>
                     <span>Log in with Facebook</span>
                 </button>
+                {/* 
+                    The username you entered doesn't belong to an account. Please check your username and try again. 
+                    Sorry, your password was incorrect. Please double-check your password.
+                */}
+                <div className={message ? "message-box" : "message-box hidden"}>
+                    <span>{message}</span>
+                </div>
                 <Link to="/reset-password">
                     Forgot password?
                 </Link>
