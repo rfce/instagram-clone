@@ -1,0 +1,76 @@
+.profile__container {
+    min-height: calc(100vh - 61px);
+    color: rgb(250, 250, 250);
+    background-color: rgb(18, 18, 18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__container h2 {
+    all: unset;
+}
+
+.profile_user {
+    width: 60vw;
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding-left: 5vw;
+    gap: 80px;
+    border-bottom: 1px solid rgba(60, 57, 57, 0.573);
+}
+
+.profile_user .user_info {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.profile_user .user_info > div {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.user_info div:first-of-type {
+    gap: 15px;
+}
+
+.user_info div:first-of-type > h2 {
+    font-size: 28px;
+}
+
+.user_info div:first-of-type > button {
+    all: unset;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgb(54, 54, 54);
+    border-radius: 4px;
+    padding: 5px 9px;
+    cursor: pointer;
+}
+
+.user_info div:first-of-type > svg {
+    cursor: pointer;
+}
+
+.user_photo > img {
+    width: 150px;
+    border-radius: 50%;
+}
+
+.user_follow > div span:first-of-type {
+    padding-right: 4px;
+    font-weight: bold;
+}
+
+.profile_username > h2 {
+    font-weight: bold;
+}
+
+.profile_posts {
+    padding-top: 20px;
+    height: 30vh;
+}

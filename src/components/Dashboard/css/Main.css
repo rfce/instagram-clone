@@ -1,0 +1,4 @@
+.dashboard__main {
+    min-height: calc(100vh - 61px);
+    background-color: rgb(18, 18, 18);
+}
