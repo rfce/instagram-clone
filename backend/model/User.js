@@ -25,7 +25,22 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    photo: {
+        type: String,
+        required: false
+    },
+    profile: {
+        type: String,
+        enum: ['Private', 'Public'],
+        default: "Public"
+    },
+    followers: [String],
+    following: [String],
+    posts: [{
+        photo: String,
+        caption: String
+    }]
 })
 
 module.exports = mongoose.model("User", userSchema)

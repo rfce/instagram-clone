@@ -11,16 +11,31 @@ import {
     FindPeople, 
     ActivityFeed,
     Profile,
-    Saved
+    Saved,
+    Spinner
 } from "../../assets/svg/Icons"
 import { useNavigate, Link } from "react-router-dom"
+import api from "../../config/backend"
 
 const DashboardHeader = () => {
     const [search, setSearch] = useState("")
+    const [debounce, setDebounce] = useState(search)
     const [hidden, setHidden] = useState(true)
     const [click, setClick] = useState(0)
+    const [searchResult, setSearchResult] = useState([])
 
     const navigate = useNavigate()
+
+    // Debouncing
+    // Reduce the amount of api calls as state "search" will
+    //      change only afer one second
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSearch(debounce)
+        }, 1000)
+
+        return () => clearTimeout(timer)
+    }, [debounce])
 
     useEffect(() => {
         if (click) {
@@ -29,29 +44,84 @@ const DashboardHeader = () => {
         }
     }, [click])
 
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+
+        const init = async () => {
+            const response = await fetch(`${api}/search`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ search, token })
+            })
+
+            const data = await response.json()
+
+            if (data.status == "success") {
+                setSearchResult(data.data)
+            }
+        }
+
+        if (search) {
+            init()
+        }
+    }, [search])
+
     return (
         <div className="dashboard__header">
             <div className="header_logo">
                 <div>
-                    <Instagram />
+                    <Link to="/dashboard">
+                        <Instagram />
+                    </Link>
                 </div>
                 <DownArrow />
             </div>
             <div className="header_search">
                 <div>
                     <input
+                        className={debounce ? "text" : undefined}
                         type="text"
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
+                        value={debounce}
+                        onChange={e => setDebounce(e.target.value)}
                     />
-                    <div className="search_icon">
-                        <Search />
-                        <label>Search</label>
+                    {!debounce && (
+                        <div className="search_icon">
+                            <Search />
+                            <label>Search</label>
+                        </div>
+                    )}
+                    <div className={debounce ? "arrow" : "hidden"}></div>
+                    <div className={debounce ? "search_results" : "hidden"}>
+                        { searchResult.length ? (
+                            searchResult.map(user => {
+                                return (
+                                    <div className="result">
+                                        <div className="result_profile">
+                                            <img src={Avatar} alt="avatar" />
+                                        </div>
+                                        <div className="result_info">
+                                            <h2>{user.username}</h2>
+                                            <h3>{user.fullname}</h3>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        ) : search ? (
+                            <div className="non-existing">
+                                <span>
+                                    Username @{search} doesn't exist
+                                </span>
+                            </div>
+                        ) : <Spinner /> }
                     </div>
                 </div>
             </div>
             <div className="header_buttons">
-                <Home />
+                <Link to="/dashboard">
+                    <Home />
+                </Link>
                 <Messenger />
                 <NewPost />
                 <FindPeople />

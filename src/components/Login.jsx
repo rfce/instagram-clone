@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import logo from '../assets/Images/Instagram.png'
 import facebookIcon from '../assets/Icons/Facebook.png'
+import { Spinner } from "../assets/svg/Icons"
 
 const Login = () => {
     const [username, setUsername] = useState("")
@@ -12,6 +13,7 @@ const Login = () => {
     const [message, setMessage] = useState("")
     const [click, setClick] = useState(0)
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -21,6 +23,8 @@ const Login = () => {
 
     useEffect(() => {
         const loginUser = async () => {
+            setLoading(true)
+
             const response = await fetch(`${api}/login`, {
                 method: 'POST',
                 headers: {
@@ -32,6 +36,7 @@ const Login = () => {
             const data = await response.json()
 
             if (data.status == "fail") {
+                setLoading(false)
                 setMessage(data.reason)
             } else {
                 localStorage.setItem("token", data.token)
@@ -77,7 +82,7 @@ const Login = () => {
                     className={canLogin ? "clickable" : undefined}
                     onClick={() => setClick(prev => prev + 1)}
                 >
-                    Log In
+                    {loading ? <Spinner /> : "Log In"}
                 </button>
                 <div className="seperator">
                     <div></div>
