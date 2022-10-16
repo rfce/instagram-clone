@@ -6,6 +6,13 @@ const searchUsers = async (req, res) => {
 
     const search = req.body.search
 
+    if (!search) {
+        return res.json({
+            status: "fail",
+            reason: "Malformed input - search field is required"
+        })
+    }
+
     if (token === undefined) {
         return res.json({
             status: "fail",
@@ -23,6 +30,8 @@ const searchUsers = async (req, res) => {
             reason: "Invalid token. Please login again to get a new token."
         })
     }
+
+    const me = data.username
 
     // Search user in database
     // Matches search string in fullname or username
@@ -43,7 +52,7 @@ const searchUsers = async (req, res) => {
             following: false,
             posts: false
         }
-    )
+    ).limit(10)
 
     if (data === null) {
         return res.json({
@@ -52,6 +61,8 @@ const searchUsers = async (req, res) => {
             data: []
         })
     }
+    
+    data = data.filter(user => user.username !== me)
 
     res.json({
         status: "success",

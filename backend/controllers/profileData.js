@@ -1,11 +1,8 @@
 const jwt = require('jsonwebtoken')
-const User = require('../model/User')
+const User = require("../model/User")
 
-// Searches a user by username
-// Required to show profile information of that user
 const userInfo = async (req, res) => {
     const token = req.body.token
-    const username = req.body.username
 
     if (token === undefined) {
         return res.json({
@@ -24,38 +21,29 @@ const userInfo = async (req, res) => {
             reason: "Invalid token. Please login again to get a new token."
         })
     }
+    
+    const username = data.username
 
-    data = await User.find(
+    data = await User.findOne(
         { username },
         {
             _id: false, 
             __v: false, 
-            email: false,
-            phone: false,
-            password: false
+            password: false 
         }
     )
 
-    if (data.length === 0) {
+    if (data === null) {
         return res.json({
-            status: "success",
-            reason: `User @${username} doesn't exist`,
-            data: null
+            status: 'fail',
+            reason: 'No user found with username "' + username + '"'
         })
-    }
-
-    const user = {...data[0]._doc}
-
-    if (user.profile == "Private") {
-        user.posts = user.posts.length
-        user.followers = user.followers.length
-        user.following = user.following.length
     }
 
     res.json({
         status: "success",
-        reason: `Profile information for @${username}`,
-        data: user
+        reason: "Successfully fetched data for " + username,
+        data
     })
 }
 

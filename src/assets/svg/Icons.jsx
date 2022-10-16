@@ -506,6 +506,24 @@ const Spinner = () => {
     )
 }
 
+const ThreeDots = () => {
+    return (
+        <svg
+            aria-label="Options"
+            className="_ab6-"
+            color="#fafafa"
+            fill="#fafafa"
+            height={32}
+            viewBox="0 0 24 24"
+            width={32}
+        >
+            <circle cx={12} cy={12} r={1.5} />
+            <circle cx={6} cy={12} r={1.5} />
+            <circle cx={18} cy={12} r={1.5} />
+        </svg>
+    )
+}
+
 export {
     Instagram, 
     DownArrow, 
@@ -518,6 +536,7 @@ export {
     Profile,
     Saved,
     Settings,
-    Spinner
+    Spinner,
+    ThreeDots
 }
 

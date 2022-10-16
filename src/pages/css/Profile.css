@@ -35,7 +35,7 @@
 }
 
 .user_info div:first-of-type {
-    gap: 15px;
+    gap: 30px;
 }
 
 .user_info div:first-of-type > h2 {
@@ -53,6 +53,33 @@
 }
 
 .user_info div:first-of-type > svg {
+    cursor: pointer;
+}
+
+.user_info .follow {
+    display: flex;
+    align-items: center;
+    gap: 8px !important;
+}
+
+.user_info .follow .follow-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 149, 246);
+    border-color: rgb(0, 149, 246);
+    height: 18px;
+    width: 74px;
+}
+
+.user_info .follow .down-arrow {
+    height: 30px;
+    width: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 149, 246);
+    border-radius: 4px;
     cursor: pointer;
 }
 

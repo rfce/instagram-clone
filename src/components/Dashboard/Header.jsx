@@ -19,7 +19,7 @@ import api from "../../config/backend"
 
 const DashboardHeader = () => {
     const [search, setSearch] = useState("")
-    const [debounce, setDebounce] = useState(search)
+    const [debounce, setDebounce] = useState("")
     const [hidden, setHidden] = useState(true)
     const [click, setClick] = useState(0)
     const [searchResult, setSearchResult] = useState([])
@@ -95,9 +95,17 @@ const DashboardHeader = () => {
                     <div className={debounce ? "arrow" : "hidden"}></div>
                     <div className={debounce ? "search_results" : "hidden"}>
                         { searchResult.length ? (
-                            searchResult.map(user => {
+                            searchResult.map((user, index) => {
                                 return (
-                                    <div className="result">
+                                    <div 
+                                        key={index} 
+                                        className="result"
+                                        onClick={
+                                            () => {
+                                                setDebounce("")
+                                                navigate('/profile', {state: { username: user.username }})
+                                            }}
+                                    >
                                         <div className="result_profile">
                                             <img src={Avatar} alt="avatar" />
                                         </div>
