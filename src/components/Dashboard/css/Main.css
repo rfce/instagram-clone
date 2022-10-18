@@ -62,6 +62,18 @@
     cursor: pointer;
 }
 
+.post-comments .post-reactions svg.heart-red {
+    color: rgb(237, 73, 86);
+    fill: rgb(237, 73, 86);
+    cursor: pointer;
+}
+
+.post-comments .post-reactions svg.heart-red:hover {
+    color: rgb(237, 73, 86);
+    fill: rgb(237, 73, 86);
+    cursor: pointer;
+}
+
 .post-comments .post-reactions svg:hover {
     color: #8e8e8e;
     fill: #8e8e8e;
@@ -90,6 +102,25 @@
     color: rgb(142, 142, 142);
     font-size: 14px;
     padding: 6px 15px;
+}
+
+.post-comments .post-total-comments > h3 {
+    all: unset;
+    cursor: pointer;
+}
+
+.post-total-comments .individual-comment {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    padding-top: 4px;
+}
+
+.post-total-comments .individual-comment h3 {
+    all: unset;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
 }
 

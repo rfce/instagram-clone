@@ -14,6 +14,7 @@ const postSchema = new Schema({
         comment: String,
         likes: [String]
     }],
+    hash: String,
     date: {
         type: Date,
         default: Date.now

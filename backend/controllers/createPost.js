@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const Post = require('../model/Post')
 const User = require('../model/User')
+const crypto = require('crypto')
 
 const createPost = async (req, res) => {
     const token = req.headers.token
@@ -36,10 +37,13 @@ const createPost = async (req, res) => {
 
     const caption = req.body.caption
 
+    const hash = crypto.randomBytes(20).toString('hex')
+
     const result = await Post.create({
         username,
         photo,
-        caption
+        caption,
+        hash
     })
 
     const updated = await User.findOneAndUpdate(

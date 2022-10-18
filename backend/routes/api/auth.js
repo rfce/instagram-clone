@@ -8,6 +8,8 @@ const userInfo = require('../../controllers/userInfo')
 const followUser = require('../../controllers/followUser')
 const createPost = require('../../controllers/createPost')
 const getPosts = require('../../controllers/getPosts')
+const likePost = require('../../controllers/likePost')
+const addComment = require('../../controllers/addComment')
 const router  = express.Router()
 
 const storage = multer.diskStorage({
@@ -29,5 +31,7 @@ router.post("/info", userInfo)
 router.post("/follow", followUser)
 router.post("/post", upload.single('image'), createPost)
 router.post('/posts', getPosts)
+router.post('/like', likePost)
+router.post('/comment', addComment)
 
 module.exports = router
