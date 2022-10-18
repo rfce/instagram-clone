@@ -1,5 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import ProtectedRoute from './config/ProtectedRoute'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en.json'
 
 import Home from './pages/Home'
 import Error from './pages/Error'
@@ -7,6 +9,9 @@ import RegisterPage from './pages/RegisterPage'
 import Dashboard from './pages/Dashboard'
 import Main from './components/Dashboard/Main'
 import Profile from './pages/Profile'
+
+TimeAgo.addDefaultLocale(en)
+TimeAgo.addLocale(en)
 
 function App() {
   return (

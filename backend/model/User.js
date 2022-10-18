@@ -37,10 +37,7 @@ const userSchema = new Schema({
     },
     followers: [String],
     following: [String],
-    posts: [{
-        photo: String,
-        caption: String
-    }]
+    posts: [Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model("User", userSchema)

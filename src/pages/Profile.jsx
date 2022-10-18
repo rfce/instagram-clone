@@ -1,6 +1,6 @@
 import "./css/Profile.css"
 import Footer from "../components/Footer"
-import { DownArrow, Settings, ThreeDots } from "../assets/svg/Icons"
+import { DownArrow, Settings, ThreeDots, Unfollow } from "../assets/svg/Icons"
 import ProfilePhoto from "../assets/Images/avatar-large.jpg"
 import { useEffect, useContext } from "react"
 import api from "../config/backend"
@@ -17,6 +17,41 @@ const Profile = () => {
     const location = useLocation()
 
     const [profile, setProfile] = useState(null)
+    const [click, setClick] = useState(0)
+
+    const following = profile && profile.followers.includes(user && user.username)
+
+    // Handle user follow and unfollow
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        const init = async () => {
+            const username = profile.username
+
+            const response = await fetch(`${api}/follow`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    action: following ? "unfollow" : "follow",
+                    token
+                })
+            })
+
+            const data = await response.json()
+
+            if (data.status == "success") {
+                setProfile(data.data)
+                actions.setUser(data.profile)
+            }
+        }
+
+        if (profile && click) {
+            init()
+        }
+    }, [click])
 
     // Handle search for another user profile
     // Note - location.state contains username of searched user
@@ -105,10 +140,13 @@ const Profile = () => {
                                 <button>
                                     Message
                                 </button>
-                                <button className="follow-btn">
-                                    Follow
+                                <button 
+                                    className={following ? "unfollow-btn" : "follow-btn"}
+                                    onClick={() => setClick(prev => prev + 1)}
+                                >
+                                    { following ? <Unfollow /> : "Follow" }
                                 </button>
-                                <div className="down-arrow">
+                                <div className={following ? "down-arrow brown-box" : "down-arrow"}>
                                     <DownArrow />
                                 </div>
                                 <ThreeDots />

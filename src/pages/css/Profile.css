@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 61px;
 }
 
 .profile__container h2 {
@@ -72,6 +73,15 @@
     width: 74px;
 }
 
+.user_info .follow .unfollow-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 27px;
+    width: 75px;
+    padding: 0px 0px;
+}
+
 .user_info .follow .down-arrow {
     height: 30px;
     width: 34px;
@@ -81,6 +91,16 @@
     background-color: rgb(0, 149, 246);
     border-radius: 4px;
     cursor: pointer;
+}
+
+.user_info .follow .brown-box {
+    height: 27px;
+    background-color: transparent;
+    border: 1px solid rgb(54, 54, 54);
+}
+
+.user_info .follow .brown-box > svg {
+    rotate: 180deg;
 }
 
 .user_photo > img {

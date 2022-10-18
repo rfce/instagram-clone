@@ -22,6 +22,10 @@ const Register = () => {
     
     useEffect(() => {
         document.title = "Sign up • Instagram"
+        const token = localStorage.getItem("token")
+        if (token) {
+            navigate("/dashboard")
+        }
     }, [])
 
     useEffect(() => {
