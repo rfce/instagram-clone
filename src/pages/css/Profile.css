@@ -73,6 +73,12 @@
     width: 74px;
 }
 
+.user_info .follow .follow-btn .spinner {
+    width: 22px;
+    height: 22px;
+    transform: translate(0px, -2px);
+}
+
 .user_info .follow .unfollow-btn {
     display: flex;
     justify-content: center;
@@ -80,6 +86,11 @@
     height: 27px;
     width: 75px;
     padding: 0px 0px;
+}
+
+.user_info .follow .unfollow-btn .spinner {
+    width: 20px;
+    height: 20px;
 }
 
 .user_info .follow .down-arrow {

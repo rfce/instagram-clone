@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import instagramLogo from "../assets/Images/Instagram.png"
 import facebookIcon from "../assets/Icons/facebookWhite.png"
 import api from "../config/backend"
+import { Spinner } from "../assets/svg/Icons"
 
 const Register = () => {
     const [contact, setContact] = useState("")
@@ -13,6 +14,7 @@ const Register = () => {
     const [message, setMessage] = useState("")
     const [click, setClick] = useState(0)
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const canRegister = contact.length > 4 && fullname.length > 4 && username.length > 4 && password.length > 4
 
@@ -40,6 +42,8 @@ const Register = () => {
 
             const data = await response.json()
 
+            setLoading(false)
+
             if (data.status == "fail") {
                 setMessage(data.reason)
             } else {
@@ -48,6 +52,7 @@ const Register = () => {
             }
         }
         if (click) {
+            setLoading(true)
             registerUser()
         }
     }, [click])
@@ -132,7 +137,7 @@ const Register = () => {
                         setClick(prev => prev + 1)
                     }}
                 >
-                    Sign up
+                    {loading ? <Spinner /> : "Sign up"}
                 </button>
                 <div className={message ? "message-box" : "message-box hidden"}>
                     <span>{message}</span>

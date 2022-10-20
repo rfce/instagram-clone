@@ -134,11 +134,89 @@
 }
 
 .header_buttons {
+    position: relative;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 18px;
+}
+
+.header_buttons .activity-container {
+    position: absolute;
+    top: 40px;
+    right: 100px;
+    background-color: rgb(47, 47, 47);
+    width: 500px;
+    border-radius: 10px;
+}
+
+.header_buttons .activity-arrow {
+    position: absolute;
+    top: 44px;
+    right: 182px;
+    background-color: rgb(47, 47, 47);
+    width: 50px;
+    height: 50px;
+    transform: rotate(45deg);
+}
+
+.header_buttons .activity-container .activity-blank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header_buttons .activity-container .activity-blank > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+}
+
+.activity-blank > div h4 {
+    all: unset;
+    color: #98f5e1;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.header_buttons .activity-container .activity-blank img {
+    width: 20px;
+    background-color: #98f5e1;
+    border-radius: 50%;
+}
+
+.header_buttons .activity-container .activity-blank > span {
+    color: #fbf8cc;
+    width: 400px;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.header_buttons .activity-container .activity-fill {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.header_buttons .activity-container .fill-notification {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding-left: 20px;
+}
+
+.header_buttons .activity-container .fill-notification > h5 {
+    all: unset;
+    padding-left: 10px;
+    font-size: 14px;
+    color: whitesmoke;
+}
+
+.header_buttons .activity-container .fill-notification > img {
+    width: 30px;
+    border-radius: 50%;
 }
 
 .header_buttons > svg {
@@ -201,3 +279,4 @@
 .avatar_menu li:hover {
     background-color: black;
 }
+

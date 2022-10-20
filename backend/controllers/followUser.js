@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require("../model/User")
+const Notification = require("../model/Notification")
 
 const followUser = async (req, res) => {
     const token = req.body.token
@@ -12,7 +13,7 @@ const followUser = async (req, res) => {
     if (!usernameFollow) {
         return res.json({
             status: "fail",
-            reason: "Malformed input - follow field is required"
+            reason: "Malformed input - username field is required"
         })
     }
 
@@ -74,6 +75,12 @@ const followUser = async (req, res) => {
         following,
         { new: true }
     ).select("-_id -__v -email -phone -password")
+
+    const save = await Notification.create({
+        username: usernameFollow,
+        action: "follow",
+        from: me
+    })
     
     res.json({
         status: "success",

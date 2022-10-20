@@ -10,6 +10,7 @@ const createPost = require('../../controllers/createPost')
 const getPosts = require('../../controllers/getPosts')
 const likePost = require('../../controllers/likePost')
 const addComment = require('../../controllers/addComment')
+const getNotification = require('../../controllers/getNotification')
 const router  = express.Router()
 
 const storage = multer.diskStorage({
@@ -33,5 +34,6 @@ router.post("/post", upload.single('image'), createPost)
 router.post('/posts', getPosts)
 router.post('/like', likePost)
 router.post('/comment', addComment)
+router.post('/notifications', getNotification)
 
 module.exports = router

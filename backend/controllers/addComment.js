@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const Post = require('../model/Post')
+const Notification = require('../model/Notification')
 
 const addComment = async (req, res) => {
     const token = req.body.token
@@ -52,6 +53,13 @@ const addComment = async (req, res) => {
         })
     }
 
+    const save = await Notification.create({
+        username: updated.username,
+        action: "comment",
+        from: data.username,
+        hash
+    })
+    
     res.json({
         status: "success",
         post: updated

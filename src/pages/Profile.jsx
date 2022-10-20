@@ -1,12 +1,12 @@
 import "./css/Profile.css"
 import Footer from "../components/Footer"
-import { DownArrow, Settings, ThreeDots, Unfollow } from "../assets/svg/Icons"
+import { DownArrow, Settings, Spinner, ThreeDots, Unfollow } from "../assets/svg/Icons"
 import ProfilePhoto from "../assets/Images/avatar-large.jpg"
-import { useEffect, useContext } from "react"
+import { useState, useEffect, useContext } from "react"
 import api from "../config/backend"
 import { UserContext } from "./Dashboard"
-import { useState } from "react"
 import { useLocation } from "react-router-dom"
+import followUser from "../api/followUser"
 
 const Profile = () => {
     // User's own data set globally
@@ -18,29 +18,19 @@ const Profile = () => {
 
     const [profile, setProfile] = useState(null)
     const [click, setClick] = useState(0)
+    const [loading, setLoading] = useState(false)
 
     const following = profile && profile.followers.includes(user && user.username)
 
     // Handle user follow and unfollow
     useEffect(() => {
-        const token = localStorage.getItem('token')
-
         const init = async () => {
-            const username = profile.username
+            const data = await followUser(
+                profile.username,
+                following ? "unfollow" : "follow"
+            )
 
-            const response = await fetch(`${api}/follow`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    username,
-                    action: following ? "unfollow" : "follow",
-                    token
-                })
-            })
-
-            const data = await response.json()
+            setLoading(false)
 
             if (data.status == "success") {
                 setProfile(data.data)
@@ -49,6 +39,7 @@ const Profile = () => {
         }
 
         if (profile && click) {
+            setLoading(true)
             init()
         }
     }, [click])
@@ -144,7 +135,9 @@ const Profile = () => {
                                     className={following ? "unfollow-btn" : "follow-btn"}
                                     onClick={() => setClick(prev => prev + 1)}
                                 >
-                                    { following ? <Unfollow /> : "Follow" }
+                                    {loading ? <Spinner className="spinner" /> : (
+                                        following ? <Unfollow /> : "Follow"
+                                    )}
                                 </button>
                                 <div className={following ? "down-arrow brown-box" : "down-arrow"}>
                                     <DownArrow />

@@ -2,13 +2,13 @@ import "./css/Header.css"
 import { useState, useEffect, useContext } from "react"
 import Avatar from "../../assets/Images/avatar.jpg"
 import {
-    Instagram, 
-    DownArrow, 
-    Search, 
+    Instagram,
+    DownArrow,
+    Search,
     Home,
-    Messenger, 
-    NewPost, 
-    FindPeople, 
+    Messenger,
+    NewPost,
+    FindPeople,
     ActivityFeed,
     Profile,
     Saved,
@@ -18,14 +18,17 @@ import { useNavigate, Link } from "react-router-dom"
 import api from "../../config/backend"
 import CreatePost from "../CreatePost"
 import { UserContext } from "../../pages/Dashboard"
+import Activity from "../../assets/Icons/Activity.png"
+import { nanoid } from "nanoid"
 
 const DashboardHeader = () => {
     const [search, setSearch] = useState("")
     const [debounce, setDebounce] = useState("")
     const [hidden, setHidden] = useState(true)
-    const [click, setClick] = useState(0)
+    const [click, setClick] = useState({ count: 0, control: "notifications" })
     const [searchResult, setSearchResult] = useState([])
-    
+    const [notifications, setNotifications] = useState([])
+
     const { state, actions } = useContext(UserContext)
 
     const { popup } = state
@@ -43,10 +46,33 @@ const DashboardHeader = () => {
         return () => clearTimeout(timer)
     }, [debounce])
 
+    // Handle notifications and logout
     useEffect(() => {
-        if (click) {
-            localStorage.removeItem("token")
-            navigate("/")
+        const init = async () => {
+            const token = localStorage.getItem('token')
+
+            const response = await fetch(`${api}/notifications`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token })
+            })
+
+            const data = await response.json()
+
+            if (data.status == "success") {
+                setNotifications(data.notification)
+            }
+        }
+
+        if (click.count !== 0 && click.control !== null) {
+            if (click.control == "logout") {
+                localStorage.removeItem("token")
+                navigate("/")
+            } else {
+                init()
+            }
         }
     }, [click])
 
@@ -102,16 +128,16 @@ const DashboardHeader = () => {
                         )}
                         <div className={debounce ? "arrow" : "hidden"}></div>
                         <div className={debounce ? "search_results" : "hidden"}>
-                            { searchResult.length ? (
+                            {searchResult.length ? (
                                 searchResult.map((user, index) => {
                                     return (
-                                        <div 
-                                            key={index} 
+                                        <div
+                                            key={index}
                                             className="result"
                                             onClick={
                                                 () => {
                                                     setDebounce("")
-                                                    navigate('/profile', {state: { username: user.username }})
+                                                    navigate('/profile', { state: { username: user.username } })
                                                 }}
                                         >
                                             <div className="result_profile">
@@ -130,7 +156,7 @@ const DashboardHeader = () => {
                                         Username @{search} doesn't exist
                                     </span>
                                 </div>
-                            ) : <Spinner /> }
+                            ) : <Spinner />}
                         </div>
                     </div>
                 </div>
@@ -139,12 +165,50 @@ const DashboardHeader = () => {
                         <Home />
                     </Link>
                     <Messenger />
-                    <NewPost 
-                        onClick={() => actions.setPopup({open: true, origin: "post"})}
+                    <NewPost
+                        onClick={() => actions.setPopup({ open: true, origin: "post" })}
                     />
                     <FindPeople />
-                    <ActivityFeed />
-                    <div 
+                    <ActivityFeed
+                        onClick={() => setClick(prev => {
+                            return {
+                                count: prev.count + 1,
+                                control: prev.control == "notification" ? null : "notification"
+                            }
+                        })}
+                    />
+                    { click.count != 0 && click.control == "notification" ?
+                        <>
+                            <div className="activity-arrow"></div>
+                            <div className="activity-container">
+                                {notifications.length ? 
+                                    <div className="activity-fill">
+                                        {notifications.map(pop => {
+                                            return (
+                                                <div key={nanoid()} className="fill-notification">
+                                                    <img src={Avatar} alt=""/>
+                                                    <h5>
+                                                        {pop.action == "like" ? `@${pop.from} likes your post` : (
+                                                            pop.action == "comment" ? `@${pop.from} commented on your post` : `@${pop.from} started following you`
+                                                        )}
+                                                    </h5>
+                                                </div>
+                                            )
+                                        })}
+                                    </div> : 
+                                    <div className="activity-blank">
+                                        <div>
+                                            <img src={Activity} alt="" />
+                                            <h4>Activity on your posts</h4>
+                                        </div>
+                                        <span>
+                                            When someone likes or comments on one of your posts, you'll see it here.
+                                        </span>
+                                    </div>
+                                }
+                            </div>
+                        </> : undefined }
+                    <div
                         className="header_avatar"
                         onClick={() => setHidden(prev => !prev)}
                     >
@@ -163,7 +227,12 @@ const DashboardHeader = () => {
                                     <span>Saved</span>
                                 </li>
                                 <li
-                                    onClick={() => setClick(prev => prev + 1)}
+                                    onClick={() => setClick(prev => {
+                                        return {
+                                            count: prev.count + 1,
+                                            control: "logout"
+                                        }
+                                    })}
                                 >Logout</li>
                             </ul>
                         </div>

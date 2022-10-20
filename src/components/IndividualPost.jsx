@@ -6,7 +6,7 @@ import ReactTimeAgo from 'react-time-ago'
 import api from '../config/backend'
 import Avatar from '../assets/Images/avatar.jpg'
 
-const IndividualPost = ({postInfo, index, state}) => {
+const IndividualPost = ({postInfo, state}) => {
     const [textarea, setTextarea] = useState("")
     const [height, setHeight] = useState(17)
     const [post, setPost] = useState(postInfo)
@@ -67,7 +67,7 @@ const IndividualPost = ({postInfo, index, state}) => {
     }
 
     return (
-        <div key={index} className="post-box">
+        <div className="post-box">
             <div className="post-username">
                 <img src={Avatar} alt="" />
                 <span 

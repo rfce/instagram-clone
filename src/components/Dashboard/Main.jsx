@@ -5,6 +5,8 @@ import Avatar from '../../assets/Images/avatar.jpg'
 import { UserContext } from "../../pages/Dashboard"
 import { Link } from "react-router-dom"
 import IndividualPost from "../IndividualPost"
+import Suggestion from "../Suggestion"
+import { nanoid } from "nanoid"
 
 const Main = () => {
    const [posts, setPosts] = useState([])
@@ -33,13 +35,15 @@ const Main = () => {
       }
 
       init()
-   }, [])
+   }, [state.user])
+
+   const popular = ["noeycodes", "hannah", "nomadlist", "python-dev", "pramela"]
 
    return (
       <div className="dashboard__main">
          <div className="main__posts_container">
             {posts.map(
-               (post, index) => <IndividualPost key={index} postInfo={post} index={index} state={state} />
+               post => <IndividualPost key={nanoid()} postInfo={post} state={state} />
             )}
          </div>
          <div className="main__suggestions">
@@ -60,8 +64,17 @@ const Main = () => {
                   <h3>Suggestions For You</h3>
                   <span>See All</span>
                </div>
-               <div>
-
+               <div className="suggestions-box">
+                  {popular.map(username => {
+                     return (
+                        <Suggestion 
+                           key={nanoid()}
+                           username={username} 
+                           description="Popular"
+                           followed={state.user && state.user.following.includes(username)}
+                           actions={actions}
+                        />
+                  )})}
                </div>
             </div>
          </div>

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const Post = require('../model/Post')
+const Notification = require('../model/Notification')
 
 const likePost = async (req, res) => {
     const token = req.body.token
@@ -51,6 +52,16 @@ const likePost = async (req, res) => {
         return res.json({
             status: "fail",
             reason: "Invalid post hash"
+        })
+    }
+
+    // Add liked post to notification
+    if (action == "like") {
+        const save = await Notification.create({
+            username: updated.username,
+            action,
+            from: data.username,
+            hash
         })
     }
 
