@@ -100,6 +100,23 @@ const DashboardHeader = () => {
         }
     }, [search])
 
+    // Handle click on like, comment or follow notification
+    const handleNotification = (person) => {
+        // Close notification window
+        setClick(prev => {
+            return { count: prev.count + 1, control: null }
+        })
+
+        // Redirect to follower profile
+        if (person.action === "follow") {
+            navigate('/profile', {state: {username: person.from}})
+        }
+
+        /*
+            Todo: display liked, commented post
+        */
+    }
+
     return (
         <>
             {popup.open && popup.origin == "post" && <CreatePost />}
@@ -184,14 +201,25 @@ const DashboardHeader = () => {
                                 {notifications.length ? 
                                     <div className="activity-fill">
                                         {notifications.map(pop => {
+                                            const head = "@" + pop.from
+
+                                            let message
+
+                                            pop.action == "comment" ?
+                                                message = "commented on your post"
+                                                    : message = "started following you"
+                                                       
                                             return (
-                                                <div key={nanoid()} className="fill-notification">
+                                                <div 
+                                                    key={nanoid()} 
+                                                    className="fill-notification"
+                                                    onClick={() => handleNotification(pop)}
+                                                >
                                                     <img src={Avatar} alt=""/>
-                                                    <h5>
-                                                        {pop.action == "like" ? `@${pop.from} likes your post` : (
-                                                            pop.action == "comment" ? `@${pop.from} commented on your post` : `@${pop.from} started following you`
-                                                        )}
-                                                    </h5>
+                                                    <h3>{head}</h3>
+                                                    <span>
+                                                        {pop.action == "like" ? "likes your post" : message}
+                                                    </span>
                                                 </div>
                                             )
                                         })}

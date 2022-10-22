@@ -570,7 +570,7 @@ const Gallary = () => {
     )
 }
 
-const Close = () => {
+const Close = (props) => {
     return (
         <svg
             aria-label="Close"
@@ -580,6 +580,7 @@ const Close = () => {
             height={18}
             viewBox="0 0 48 48"
             width={18}
+            {...props}
         >
             <title>{"Close"}</title>
             <path

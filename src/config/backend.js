@@ -1,3 +1,3 @@
-const api = "http://localhost:5000/api"
+const api = "https://instagram-bac.herokuapp.com/api"
 
 export default api

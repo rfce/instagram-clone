@@ -24,7 +24,7 @@ const getNotification = async (req, res) => {
     
     const notification = await Notification.find(
         { username: data.username }
-    ).sort("-date").select("-_id -__v")
+    ).sort("-date").limit(8).select("-_id -__v")
 
     if (notification === null) {
         return res.json({

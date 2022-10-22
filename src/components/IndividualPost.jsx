@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Buffer } from 'buffer'
-import { Comment, Heart, HeartRed, Share, Smiley } from "../assets/svg/Icons"
+import { Comment, Heart, HeartRed, Share, Smiley, Spinner } from "../assets/svg/Icons"
 import ReactTimeAgo from 'react-time-ago'
 import api from '../config/backend'
 import Avatar from '../assets/Images/avatar.jpg'
@@ -10,6 +10,7 @@ const IndividualPost = ({postInfo, state}) => {
     const [textarea, setTextarea] = useState("")
     const [height, setHeight] = useState(17)
     const [post, setPost] = useState(postInfo)
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -48,6 +49,7 @@ const IndividualPost = ({postInfo, state}) => {
     }
 
     const handleAddComment = async (hash, comment) => {
+        setLoading(true)
         const token = localStorage.getItem('token')
   
         const response = await fetch(`${api}/comment`, {
@@ -59,6 +61,8 @@ const IndividualPost = ({postInfo, state}) => {
         })
   
         const data = await response.json()
+
+        setLoading(false)
 
         if (data.status == "success") {
             setPost(data.post)
@@ -138,7 +142,7 @@ const IndividualPost = ({postInfo, state}) => {
                         textarea && handleAddComment(post.hash, textarea)
                     }}
                 >
-                    Post
+                    {loading ? <Spinner /> : "Post"}
                 </span>
             </div>
             </div>

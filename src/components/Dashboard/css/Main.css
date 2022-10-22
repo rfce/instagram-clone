@@ -154,6 +154,12 @@
     padding-bottom: 11px;
 }
 
+.post-add-comment > span svg {
+    width: 20px;
+    height: 20px;
+    transform: translate(-5px, 0px);
+}
+
 .comment-box {
     resize: none;
     border: none;

@@ -8,6 +8,87 @@
     padding-top: 61px;
 }
 
+.followers-list {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(0px, -100px);
+}
+
+.followers-list .followers-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(48, 45, 45);
+    border-radius: 10px;
+    width: 400px;
+}
+
+.followers-list .followers-container .followers-heading {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    border-bottom: 1px solid rgba(74, 71, 71, 0.617);
+}
+
+.followers-container .followers-heading > h3 {
+    all: unset;
+    font-weight: 600;
+}
+
+.followers-container .followers-heading > svg {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.followers-container .list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+}
+
+.followers-container .list .person {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.followers-container .list .person > div {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.followers-container .list .person > button {
+    all: unset;
+    background-color: rgba(25, 25, 25, 0.045);
+    border: 1px solid rgba(66, 64, 64, 0.821);
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 24px;
+    cursor: pointer;
+}
+
+.followers-container .list .person h4 {
+    all: unset;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.followers-container .list .person img {
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
 .profile__container h2 {
     all: unset;
 }
@@ -122,6 +203,10 @@
 .user_follow > div span:first-of-type {
     padding-right: 4px;
     font-weight: bold;
+}
+
+.user_follow > div:not(:first-of-type) {
+    cursor: pointer;
 }
 
 .profile_username > h2 {

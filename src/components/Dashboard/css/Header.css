@@ -205,11 +205,23 @@
     align-items: center;
     height: 50px;
     padding-left: 20px;
+    cursor: pointer;
 }
 
-.header_buttons .activity-container .fill-notification > h5 {
+.header_buttons .activity-container .fill-notification:hover {
+    background-color: rgb(34, 32, 32);
+}
+
+.activity-container .fill-notification > h3 {
     all: unset;
     padding-left: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: whitesmoke;
+}
+
+.header_buttons .activity-container .fill-notification > span {
+    padding-left: 4px;
     font-size: 14px;
     color: whitesmoke;
 }
