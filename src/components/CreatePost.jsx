@@ -24,7 +24,6 @@ const CreatePost = () => {
         const file = e.target.files[0]
 
         setDetails(file)
-        // setSelected(true)
         setImage(URL.createObjectURL(file));
     }
 

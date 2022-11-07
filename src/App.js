@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage'
 import Dashboard from './pages/Dashboard'
 import Main from './components/Dashboard/Main'
 import Profile from './pages/Profile'
+import Inbox from './pages/Inbox'
 
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(en)
@@ -23,6 +24,7 @@ function App() {
           <Route path='/' element={<Dashboard />}>
             <Route path='dashboard' element={<Main />} />
             <Route path='profile' element={<Profile />} />
+            <Route path='inbox' element={<Inbox />} />
           </Route>
         </Route>
         <Route path='*' element={<Error />} />

@@ -19,7 +19,7 @@ const Instagram = () => {
     )
 }
 
-const DownArrow = () => {
+const DownArrow = (props) => {
     return (
         <svg
             aria-label="Down chevron icon"
@@ -29,6 +29,7 @@ const DownArrow = () => {
             height={12}
             viewBox="0 0 24 24"
             width={12}
+            {...props}
         >
             <path d="M12 17.502a1 1 0 0 1-.707-.293l-9-9.004a1 1 0 0 1 1.414-1.414L12 15.087l8.293-8.296a1 1 0 0 1 1.414 1.414l-9 9.004a1 1 0 0 1-.707.293Z" />
         </svg>
@@ -73,7 +74,7 @@ const Home = () => {
     )
 }
 
-const Messenger = () => {
+const Messenger = (props) => {
     return (
         <svg
             aria-label="Messenger"
@@ -82,6 +83,7 @@ const Messenger = () => {
             fill="#fafafa"
             height={24}
             width={24}
+            {...props}
         >
             <path
                 d="M12.003 2.001a9.705 9.705 0 1 1 0 19.4 10.876 10.876 0 0 1-2.895-.384.798.798 0 0 0-.533.04l-1.984.876a.801.801 0 0 1-1.123-.708l-.054-1.78a.806.806 0 0 0-.27-.569 9.49 9.49 0 0 1-3.14-7.175 9.65 9.65 0 0 1 10-9.7Z"
@@ -685,6 +687,69 @@ const HeartRed = (props) => {
     )
 }
 
+const CreateMessage = (props) => {
+    return (
+        <svg
+            aria-label="New message"
+            className="_ab6-"
+            color="#fafafa"
+            fill="#fafafa"
+            height={24}
+            width={24}
+            {...props}
+        >
+            <path
+            d="M12.202 3.203H5.25a3 3 0 0 0-3 3V18.75a3 3 0 0 0 3 3h12.547a3 3 0 0 0 3-3v-6.952"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            />
+            <path
+            d="M10.002 17.226H6.774v-3.228L18.607 2.165a1.417 1.417 0 0 1 2.004 0l1.224 1.225a1.417 1.417 0 0 1 0 2.004ZM16.848 3.924l3.228 3.229"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            />
+        </svg>
+    )
+}
+
+const MessageFlyer = (props) => {
+    return (
+        <svg
+            aria-label="Direct"
+            className="_ab6-"
+            color="#fafafa"
+            fill="#fafafa"
+            height={96}
+            width={96}
+            {...props}
+        >
+            <circle
+            cx={48}
+            cy={48}
+            fill="none"
+            r={47}
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            />
+            <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M69.286 33.21 41.447 48.804M47.254 73.123l24.122-41.125-46.83.004 16.902 16.803 5.806 24.318z"
+            />
+        </svg>
+    )
+}
+
 export {
     Instagram, 
     DownArrow, 
@@ -706,6 +771,8 @@ export {
     Comment,
     Share,
     Smiley,
-    HeartRed
+    HeartRed,
+    CreateMessage,
+    MessageFlyer
 }
 

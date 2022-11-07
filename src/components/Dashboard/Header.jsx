@@ -20,6 +20,7 @@ import CreatePost from "../CreatePost"
 import { UserContext } from "../../pages/Dashboard"
 import Activity from "../../assets/Icons/Activity.png"
 import { nanoid } from "nanoid"
+import MessageUser from "../MessageUser"
 
 const DashboardHeader = () => {
     const [search, setSearch] = useState("")
@@ -45,7 +46,7 @@ const DashboardHeader = () => {
 
         return () => clearTimeout(timer)
     }, [debounce])
-
+    
     // Handle notifications and logout
     useEffect(() => {
         const init = async () => {
@@ -76,6 +77,7 @@ const DashboardHeader = () => {
         }
     }, [click])
 
+    // Search username in databse
     useEffect(() => {
         const token = localStorage.getItem("token")
 
@@ -120,6 +122,7 @@ const DashboardHeader = () => {
     return (
         <>
             {popup.open && popup.origin == "post" && <CreatePost />}
+            {popup.open && popup.origin == "new-message" && <MessageUser setPopup={actions.setPopup} />}
             <div className="dashboard__header">
                 <div className="header_logo">
                     <div>
@@ -181,7 +184,9 @@ const DashboardHeader = () => {
                     <Link to="/dashboard">
                         <Home />
                     </Link>
-                    <Messenger />
+                    <Messenger
+                        onClick={() => navigate('/inbox')}
+                    />
                     <NewPost
                         onClick={() => actions.setPopup({ open: true, origin: "post" })}
                     />
