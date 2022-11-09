@@ -12,10 +12,11 @@ const Dashboard = () => {
         open: false,
         origin: null
     })
+    const [inbox, setInbox] = useState(null)
 
     const value = {
-        state: { user, popup },
-        actions: { setUser, setPopup }
+        state: { user, popup, inbox },
+        actions: { setUser, setPopup, setInbox }
     }
 
     useEffect(() => {

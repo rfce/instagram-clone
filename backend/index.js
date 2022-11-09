@@ -43,6 +43,30 @@ mongoose
         console.log(error)
     })
 
-app.listen(PORT, () => {
+// socket.io server setup
+const server = require('http').createServer(app)
+
+const io = require('socket.io')(server, {
+    cors: {
+        origin: whitelist,
+        methods: ['GET', "POST"]
+    }
+})
+
+io.on('connection', socket => {
+    socket.on('join', data => {
+        socket.join(data.username)
+    })
+
+    socket.on('message', data => {
+        // Send private message to "data.to" username
+        io.sockets.in(data.to).emit('chat', {
+            from: data.username,
+            message: data.message
+        })
+    })
+})
+
+server.listen(PORT, () => {
     console.log("Server running on port " + PORT)
 })

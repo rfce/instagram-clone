@@ -217,4 +217,25 @@
     color: rgb(0, 153, 255) !important;
 }
 
+.message__body {
+    overflow: scroll
+}
 
+.message__body .message__text_right {
+    text-align: end;
+    padding: 5px 20px;
+}
+
+.message__body .message__text_left {
+    text-align: start;
+    padding: 5px 10px;
+    margin-bottom: 3px;
+}
+
+.message__body .message__text_left span {
+    padding: 6px 10px;
+    background-color: rgba(82, 76, 76, 0.424);
+    border-radius: 5px;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}

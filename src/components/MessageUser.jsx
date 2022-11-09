@@ -1,12 +1,15 @@
 import "./css/MessageUser.css"
 import { Close } from "../assets/svg/Icons"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { UserContext } from "../pages/Dashboard"
 import api from "../config/backend"
 
 const MessageUser = ({ setPopup }) => {
     const [search, setSearch] = useState("")
     const [debounce, setDebounce] = useState("")
     const [users, setUsers] = useState([])
+
+    const {state, actions} = useContext(UserContext)
 
     useEffect(() => {
         document.title = "New message • Chats"
@@ -68,7 +71,14 @@ const MessageUser = ({ setPopup }) => {
                 <div className="box_search_result">
                     {users.map((user,index) => {
                         return (
-                            <div key={index} className="individual_user">
+                            <div 
+                                key={index} 
+                                className="individual_user"
+                                onClick={() => {
+                                    setPopup({open: false, origin: null})
+                                    actions.setInbox({username: user.username})
+                                }}
+                            >
                                 <h2>{user.fullname}</h2>
                                 <span>{user.username}</span>
                             </div>

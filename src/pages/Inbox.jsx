@@ -2,16 +2,32 @@ import "./css/Inbox.css"
 import { DownArrow, CreateMessage, MessageFlyer, Smiley } from "../assets/svg/Icons"
 import Avatar from "../assets/Images/avatar.jpg"
 import Gallary from "../assets/Icons/gallary-icon.png"
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { UserContext } from "../pages/Dashboard"
 import api from '../config/backend'
+import io from "socket.io-client"
+import { nanoid } from "nanoid"
+
+const socket = io.connect("http://localhost:5000")
+
+const sendMessage = (username, message, to) => {
+    socket.emit('message', { username, message, to })
+}
 
 const Inbox = () => {
     const [messages, setMessages] = useState([])
-    const [user, setUser] = useState(null)
     const [text, setText] = useState("")
 
+    let user, setUser
+
     const {state, actions} = useContext(UserContext)
+
+    user = state.inbox
+    setUser = actions.setInbox
+
+    console.log(user)
+
+    const one = useRef(true)
 
     useEffect(() => {
         document.title = "Inbox • Chats"
@@ -28,29 +44,55 @@ const Inbox = () => {
             })
 
             const data = await response.json()
-
-            const grouped = {}
-
-            data.data.forEach(message => {
-                const m = {
-                    message: message.message,
-                    date: message.date
-                }
-
-                if (grouped[message.to] === undefined) {
-                    grouped[message.to] = [m]
-                } else {
-                    grouped[message.to].push(m)
-                }
-            })
-
-            setMessages(grouped)
+            
+            if (data.status == 'success') {
+                setMessages(data.data)
+            }
         }
 
         init()
     }, [])
 
-    console.log({messages})
+    useEffect(() => {
+        // Run once
+        if (one.current === true && messages.length !== 0) {
+            // Set ref to false on first render
+            one.current = false
+
+            socket.emit('join', {
+                username: state.user.username
+            })
+
+            // Register socket chat event listener
+            socket.on('chat', data => {
+                setMessages(prev => {
+                    return [
+                        ...prev,
+                        {
+                            sender: data.from, 
+                            to: state.user.username, 
+                            message: data.message
+                        }
+                    ]
+                })
+            })
+        }
+    }, [messages])
+
+    let senders = []
+
+    messages.forEach(message => {
+        if (!senders.some(sender => sender.username == message.to)) {
+            senders.push({
+                username: message.to,
+                last_message: message.message
+            })
+        }
+    })
+
+    senders = senders.filter(
+        sender => sender.username !== state.user.username
+    )
 
     return (
         <div className="inbox__container">
@@ -66,18 +108,18 @@ const Inbox = () => {
                         />
                     </div>
                     <div className="users_list">
-                        { Object.entries(messages).map(([username, messages], index) => {
+                        { senders.map(sender => {
                             return (
                                 <div 
-                                    key={index} 
+                                    key={nanoid()}
                                     className="message_overview"
-                                    onClick={() => setUser({ username, messages })}
+                                    onClick={() => setUser({ username: sender.username })}
                                 >
                                     <img src={Avatar} alt="" />
                                     <div>
-                                        <h2>{username}</h2>
+                                        <h2>{sender.username}</h2>
                                         <span>
-                                            {messages[0].message.length > 35 ? messages[0].message.slice(0, 35) + " ..." : messages[0].message}
+                                            {sender.last_message.length > 35 ? sender.last_message.slice(0, 35) + " ..." : sender.last_message}
                                         </span>
                                     </div>
                                 </div>
@@ -94,7 +136,13 @@ const Inbox = () => {
                                 <span>{user.username}</span>
                             </div>
                             <div className="message__body">
-                                {user.messages[0].message}
+                                {messages.map((message, index) => {
+                                    return (message.sender == user.username || message.to == user.username) ? (
+                                        <div key={index} className={message.to == user.username ? "message__text_right" : "message__text_left"}>
+                                            <span>{message.message}</span>
+                                        </div>
+                                     ) : undefined
+                                })}
                             </div>
                             <div className="message__typer">
                                 <Smiley />
@@ -107,6 +155,20 @@ const Inbox = () => {
                                 />
                                 <button
                                     className={text ? "send-dark" : "send-light"}
+                                    onClick={() => {
+                                        text && sendMessage(state.user.username, text, user.username)
+                                        setMessages(prev => {
+                                            return [
+                                                ...prev,
+                                                {
+                                                    sender: state.user.username, 
+                                                    to: user.username, 
+                                                    message: text
+                                                }
+                                            ]
+                                        })
+                                        setText("")
+                                    }}
                                 >Send</button>
                             </div>
                         </div>
