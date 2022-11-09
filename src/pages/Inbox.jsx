@@ -8,7 +8,7 @@ import api from '../config/backend'
 import io from "socket.io-client"
 import { nanoid } from "nanoid"
 
-const socket = io.connect("http://localhost:5000")
+const socket = io.connect("https://instagram-bac.herokuapp.com")
 
 const sendMessage = (username, message, to) => {
     socket.emit('message', { username, message, to })
