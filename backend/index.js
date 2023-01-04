@@ -18,7 +18,7 @@ app.use(cookies())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-const whitelist = ['http://localhost:3000', 'undefined', 'https://clon-instagram.herokuapp.com']
+const whitelist = ['http://localhost:3000', 'undefined', process.env.ORIGIN]
 
 app.use(cors({
     origin: (origin, callback) => {
