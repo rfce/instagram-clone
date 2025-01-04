@@ -1,6 +1,7 @@
 const dotenv = require('dotenv')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const cron = require('node-cron')
 const cookies = require('cookie-parser')
 const express = require('express')
 const app = express()
@@ -65,6 +66,12 @@ io.on('connection', socket => {
             message: data.message
         })
     })
+})
+
+// Schedule a task to run every 2 minutes
+cron.schedule('*/2 * * * *', () => {
+    const timestamp = new Date().toISOString()
+    console.log(timestamp)
 })
 
 server.listen(PORT, () => {
