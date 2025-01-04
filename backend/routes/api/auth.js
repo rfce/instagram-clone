@@ -13,6 +13,7 @@ const addComment = require('../../controllers/addComment')
 const getNotification = require('../../controllers/getNotification')
 const getMessages = require('../../controllers/getMessages')
 const sendMessage = require('../../controllers/sendMessage')
+const keepAlive = require('../../controllers/keepAlive')
 const router  = express.Router()
 
 const storage = multer.diskStorage({
@@ -39,5 +40,6 @@ router.post('/comment', addComment)
 router.post('/notifications', getNotification)
 router.post('/messages', getMessages)
 router.post('/send-message', sendMessage)
+router.post('/keep-alive', keepAlive)
 
 module.exports = router
