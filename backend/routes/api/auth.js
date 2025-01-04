@@ -40,6 +40,6 @@ router.post('/comment', addComment)
 router.post('/notifications', getNotification)
 router.post('/messages', getMessages)
 router.post('/send-message', sendMessage)
-router.post('/keep-alive', keepAlive)
+router.get('/keep-alive', keepAlive)
 
 module.exports = router
