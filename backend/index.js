@@ -5,13 +5,13 @@ const cookies = require('cookie-parser')
 const express = require('express')
 const app = express()
 
-const authRoute = require('./routes/api/auth')
-
-const PORT = process.env.PORT || 5000
-
 // Loads environment variables globally during development
 // Using .env file
 dotenv.config()
+
+const authRoute = require('./routes/api/auth')
+
+const PORT = process.env.PORT || 5000
 
 app.use(cookies())
 
