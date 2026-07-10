@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "./css/BackendWakeup.css"
 
 const messages = [
@@ -13,38 +13,51 @@ const messages = [
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const BackendWakeup = () => {
-    const [visible, setVisible] = useState(true)
+    const [visible, setVisible] = useState(false);
     const [messageIndex, setMessageIndex] = useState(0)
+
+    const connectedRef = useRef(false)
+
+    const pingBackend = async () => {
+        while (true) {
+            try {
+                const res = await fetch(
+                    "https://instagram-clone-kvfg.onrender.com/api/keep-alive",
+                    {
+                        cache: "no-store",
+                    }
+                )
+
+                if (res.ok) {
+                    connectedRef.current = true
+
+                    break
+                }
+            } catch { }
+
+            await delay(3000)
+        }
+
+        setVisible(false)
+    }
 
     useEffect(() => {
         const messageInterval = setInterval(() => {
             setMessageIndex((i) => (i + 1) % messages.length)
         }, 3000)
 
-        async function pingBackend() {
-            while (true) {
-                try {
-                    const res = await fetch(
-                        "https://instagram-clone-kvfg.onrender.com/api/keep-alive",
-                        {
-                            cache: "no-store",
-                        }
-                    )
-
-                    if (res.ok) break
-                } catch { }
-
-                await delay(3000)
+        const isConnected = setTimeout(() => {
+            if (connectedRef.current === false) {
+                setVisible(true)
             }
-
-            clearInterval(messageInterval)
-
-            setVisible(false)
-        }
+        }, 2000)
 
         pingBackend()
 
-        return () => clearInterval(messageInterval)
+        return () => {
+            clearTimeout(isConnected)
+            clearInterval(messageInterval)
+        }
     }, [])
 
     return (
