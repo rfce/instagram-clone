@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard'
 import Main from './components/Dashboard/Main'
 import Profile from './pages/Profile'
 import Inbox from './pages/Inbox'
+import BackendWakeup from './components/BackendWakeup'
 
 TimeAgo.addDefaultLocale(en)
 TimeAgo.addLocale(en)
@@ -17,6 +18,7 @@ TimeAgo.addLocale(en)
 function App() {
   return (
     <BrowserRouter>
+    <BackendWakeup />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='register' element={<RegisterPage />} />
