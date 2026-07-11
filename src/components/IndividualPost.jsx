@@ -81,10 +81,10 @@ const IndividualPost = ({postInfo, state}) => {
                 </span>
             </div>
             <div className="post-photo">
-                <img
+                {post.photo ? <img
                     src={"data:" + post.photo.contentType + ";base64, " + Buffer.from(post.photo.data).toString('base64')}
                     alt=""
-                />
+                /> : "Loading..."}
             </div>
             <div className="post-comments">
                 <div className="post-reactions">

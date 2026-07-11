@@ -2,8 +2,10 @@ const jwt = require('jsonwebtoken')
 const Post = require('../model/Post')
 const User = require('../model/User')
 
-const getPosts = async (req, res) => {
+const fetchPost = async (req, res) => {
     const token = req.body.token
+
+    const { hash } = req.params
 
     if (token === undefined) {
         return res.json({
@@ -36,22 +38,23 @@ const getPosts = async (req, res) => {
 
     const following = profile.following
 
-    const posts = await Post.find(
+    const post = await Post.findOne(
         {
             $or: [
                 { username: data.username },
                 { username: {
                     $in: following 
                 }}
-            ]
+            ],
+            hash
         },
-        {_id: false, photo: false, __v: false}
-    ).sort("-date").limit(10)
+        {_id: false, __v: false}
+    )
 
     res.json({
         status: "success",
-        posts
+        post
     })
 }
 
-module.exports = getPosts
+module.exports = fetchPost

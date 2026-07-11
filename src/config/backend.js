@@ -1,3 +1,3 @@
-const api = "https://instagram-clone-kvfg.onrender.com/api"
+const api = "http://localhost:5010/api"
 
 export default api
