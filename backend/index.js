@@ -62,7 +62,8 @@ io.on('connection', socket => {
         // Send private message to "data.to" username
         io.sockets.in(data.to).emit('chat', {
             from: data.username,
-            message: data.message
+            message: data.message,
+            date: new Date()
         })
     })
 })

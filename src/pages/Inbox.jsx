@@ -58,8 +58,6 @@ const Inbox = () => {
 
             const data = await response.json()
 
-            console.log({ m: data.data })
-
             if (data.status == 'success') {
                 setMessages(data.data)
             }
@@ -159,12 +157,31 @@ const Inbox = () => {
                             </div>
                             <div className="message__body">
                                 {messages.map((message, index) => {
-                                    return (message.sender == user.username || message.to == user.username) ? (
-                                        <div key={index} className={message.to == user.username ? "message__text_right" : "message__text_left"}>
-                                            <span>{message.message}</span>
+                                    return (
+                                        message.sender === user.username ||
+                                        message.to === user.username
+                                    ) ? (
+                                        <div
+                                            key={index}
+                                            className={
+                                                message.to === user.username
+                                                    ? "message__text_right"
+                                                    : "message__text_left"
+                                            }
+                                        >
+                                            <div className="message__bubble">
+                                                <span>{message.message}</span>
+                                                <small className="message__time">
+                                                    {new Date(message.date).toLocaleTimeString([], {
+                                                        hour: "numeric",
+                                                        minute: "2-digit",
+                                                    })}
+                                                </small>
+                                            </div>
                                         </div>
-                                    ) : undefined
+                                    ) : null;
                                 })}
+
                                 <div ref={bottomRef} />
                             </div>
                             <div className="message__typer">
@@ -186,7 +203,8 @@ const Inbox = () => {
                                                 {
                                                     sender: state.user.username,
                                                     to: user.username,
-                                                    message: text
+                                                    message: text,
+                                                    date: new Date()
                                                 }
                                             ]
                                         })

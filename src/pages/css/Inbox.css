@@ -238,4 +238,17 @@
     border-radius: 5px;
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
+    width: fit-content;
+}
+
+.message__bubble {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.message__time {
+    font-size: 11px;
+    color: #8e8e8e;
+    user-select: none;
 }
