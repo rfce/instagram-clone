@@ -28,7 +28,7 @@ const getMessages = async (req, res) => {
         $or: [
             {sender: username}, {to: username}
         ]
-    }).select('-_id -__v').sort('-date')
+    }).select('-_id -__v').sort('date')
 
     res.json({
         status: 'success',

@@ -13,6 +13,45 @@ const Main = () => {
 
    const { state, actions } = useContext(UserContext)
 
+   const init = async (token, controller, cancelled) => {
+      setPosts([])
+
+      const response = await fetch(`${api}/posts`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json"
+         },
+         body: JSON.stringify({ token }),
+         signal: controller.signal
+      })
+
+      const data = await response.json()
+
+      if (cancelled) return
+
+      if (data.status === "success") {
+         for (const item of data.posts) {
+
+            const res = await fetch(`${api}/posts/${item.hash}`, {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json"
+               },
+               body: JSON.stringify({ token }),
+               signal: controller.signal
+            })
+
+            const post = await res.json()
+
+            if (cancelled) return
+
+            if (post.status === "success") {
+               setPosts(prev => [...prev, post.post])
+            }
+         }
+      }
+   }
+
    useEffect(() => {
       document.title = "Instagram"
 
@@ -21,46 +60,7 @@ const Main = () => {
       const controller = new AbortController()
       let cancelled = false
 
-      const init = async () => {
-         setPosts([])
-
-         const response = await fetch(`${api}/posts`, {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ token }),
-            signal: controller.signal
-         })
-
-         const data = await response.json()
-
-         if (cancelled) return
-
-         if (data.status === "success") {
-            for (const item of data.posts) {
-
-               const res = await fetch(`${api}/posts/${item.hash}`, {
-                  method: "POST",
-                  headers: {
-                     "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({ token }),
-                  signal: controller.signal
-               })
-
-               const post = await res.json()
-
-               if (cancelled) return
-
-               if (post.status === "success") {
-                  setPosts(prev => [...prev, post.post])
-               }
-            }
-         }
-      }
-
-      init()
+      init(token, controller, cancelled)
 
       return () => {
          cancelled = true

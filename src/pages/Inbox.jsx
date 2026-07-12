@@ -10,8 +10,22 @@ import { nanoid } from "nanoid"
 
 const socket = io.connect("http://localhost:5010")
 
-const sendMessage = (username, message, to) => {
+const sendMessage = async (username, message, to) => {
     socket.emit('message', { username, message, to })
+
+    const token = localStorage.getItem('token')
+
+    const response = await fetch(`${api}/send-message`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token, message, to })
+    })
+
+    const data = await response.json()
+
+    console.log({ data })
 }
 
 const Inbox = () => {
@@ -20,7 +34,7 @@ const Inbox = () => {
 
     let user, setUser
 
-    const {state, actions} = useContext(UserContext)
+    const { state, actions } = useContext(UserContext)
 
     user = state.inbox
     setUser = actions.setInbox
@@ -44,7 +58,9 @@ const Inbox = () => {
             })
 
             const data = await response.json()
-            
+
+            console.log({ m: data.data })
+
             if (data.status == 'success') {
                 setMessages(data.data)
             }
@@ -54,63 +70,64 @@ const Inbox = () => {
     }, [])
 
     useEffect(() => {
-        // Run once
-        if (one.current === true && messages.length !== 0) {
-            // Set ref to false on first render
-            one.current = false
+        if (!state.user) return
 
-            socket.emit('join', {
-                username: state.user.username
-            })
+        socket.emit("join", {
+            username: state.user.username
+        })
 
-            // Register socket chat event listener
-            socket.on('chat', data => {
-                setMessages(prev => {
-                    return [
-                        ...prev,
-                        {
-                            sender: data.from, 
-                            to: state.user.username, 
-                            message: data.message
-                        }
-                    ]
-                })
-            })
+        const handleChat = (data) => {
+            setMessages(prev => [
+                ...prev,
+                {
+                    sender: data.from,
+                    to: state.user.username,
+                    message: data.message,
+                    date: data.date
+                }
+            ])
         }
-    }, [messages])
 
-    let senders = []
+        socket.on("chat", handleChat)
+
+        return () => {
+            socket.off("chat", handleChat)
+        }
+    }, [state.user])
+
+    const senderMap = new Map()
 
     messages.forEach(message => {
-        if (!senders.some(sender => sender.username == message.to)) {
-            senders.push({
-                username: message.to,
-                last_message: message.message
-            })
-        }
+        const otherUser =
+            message.sender === state.user?.username
+                ? message.to
+                : message.sender
+
+        senderMap.set(otherUser, {
+            username: otherUser,
+            last_message: message.message
+        })
     })
 
-    senders = senders.filter(
-        sender => sender.username !== state.user.username
-    )
+    const senders = [...senderMap.values()]
 
     return (
         <div className="inbox__container">
             <div className="container__box">
                 <div className="box_users">
                     <div className="users_header">
-                        <h1>{state.user.username}</h1>
+                        <h1>{state.user && state.user.username}</h1>
                         <DownArrow />
-                        <CreateMessage 
-                            onClick={() => 
-                                actions.setPopup({open: true, origin: "new-message"})
+                        <CreateMessage
+                            onClick={() =>
+                                actions.setPopup({ open: true, origin: "new-message" })
                             }
                         />
                     </div>
                     <div className="users_list">
-                        { senders.map(sender => {
+                        {senders.map(sender => {
                             return (
-                                <div 
+                                <div
                                     key={nanoid()}
                                     className="message_overview"
                                     onClick={() => setUser({ username: sender.username })}
@@ -141,7 +158,7 @@ const Inbox = () => {
                                         <div key={index} className={message.to == user.username ? "message__text_right" : "message__text_left"}>
                                             <span>{message.message}</span>
                                         </div>
-                                     ) : undefined
+                                    ) : undefined
                                 })}
                             </div>
                             <div className="message__typer">
@@ -161,8 +178,8 @@ const Inbox = () => {
                                             return [
                                                 ...prev,
                                                 {
-                                                    sender: state.user.username, 
-                                                    to: user.username, 
+                                                    sender: state.user.username,
+                                                    to: user.username,
                                                     message: text
                                                 }
                                             ]
@@ -178,8 +195,8 @@ const Inbox = () => {
                             <h1>Your Messages</h1>
                             <span>Send private photos and messages to a friend or group.</span>
                             <button
-                                onClick={() => 
-                                    actions.setPopup({open: true, origin: "new-message"})
+                                onClick={() =>
+                                    actions.setPopup({ open: true, origin: "new-message" })
                                 }
                             >
                                 Send Message
