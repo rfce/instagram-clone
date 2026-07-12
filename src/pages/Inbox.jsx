@@ -39,9 +39,8 @@ const Inbox = () => {
     user = state.inbox
     setUser = actions.setInbox
 
-    console.log(user)
-
     const one = useRef(true)
+    const bottomRef = useRef(null);
 
     useEffect(() => {
         document.title = "Inbox • Chats"
@@ -94,6 +93,12 @@ const Inbox = () => {
             socket.off("chat", handleChat)
         }
     }, [state.user])
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth"
+        })
+    }, [messages, user])
 
     const senderMap = new Map()
 
@@ -160,6 +165,7 @@ const Inbox = () => {
                                         </div>
                                     ) : undefined
                                 })}
+                                <div ref={bottomRef} />
                             </div>
                             <div className="message__typer">
                                 <Smiley />
